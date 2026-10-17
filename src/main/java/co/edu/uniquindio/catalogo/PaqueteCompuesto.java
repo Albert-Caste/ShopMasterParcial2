@@ -7,11 +7,10 @@ public class PaqueteCompuesto implements ComponenteCatalogo {
 
     private String nombreCombo;
     private List<ComponenteCatalogo> listaCombos;
-    private double descuento;
 
-    public PaqueteCompuesto(String nombreCombo, double descuento){
+
+    public PaqueteCompuesto(String nombreCombo){
         this.nombreCombo = nombreCombo;
-        this.descuento = descuento;
         listaCombos = new ArrayList<>();
     }
 
@@ -36,8 +35,6 @@ public class PaqueteCompuesto implements ComponenteCatalogo {
             precioCombo += ct.calcularPrecio();
         }
 
-        precioCombo =precioCombo*(1-descuento/100);
-
         return precioCombo;
     }
 
@@ -56,6 +53,19 @@ public class PaqueteCompuesto implements ComponenteCatalogo {
 
     }
 
+    public String getNombreCombo() {
+        return nombreCombo;
+    }
 
+    public void setNombreCombo(String nombreCombo) {
+        this.nombreCombo = nombreCombo;
+    }
 
+    public List<ComponenteCatalogo> getListaCombos() {
+        return listaCombos;
+    }
+
+    public void setListaCombos(List<ComponenteCatalogo> listaCombos) {
+        this.listaCombos = listaCombos;
+    }
 }
