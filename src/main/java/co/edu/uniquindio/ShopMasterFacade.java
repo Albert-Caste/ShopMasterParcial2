@@ -1,78 +1,113 @@
 package co.edu.uniquindio;
 
-import co.edu.uniquindio.catalogo.CatalogoFacade;
-import co.edu.uniquindio.catalogo.CatalogoInicial;
-import co.edu.uniquindio.catalogo.ComponenteCatalogo;
-import co.edu.uniquindio.pago.ProcesadorPago;
-import co.edu.uniquindio.pago.ProxySeguridadPago;
-import co.edu.uniquindio.pedidos.EmpaqueRegalo;
-import co.edu.uniquindio.pedidos.GarantiaExtendida;
-import co.edu.uniquindio.pedidos.Pedido;
-import co.edu.uniquindio.pedidos.PedidoBase;
+import co.edu.uniquindio.catalogo.*;
+import co.edu.uniquindio.pedidos.*;
+import co.edu.uniquindio.pago.*;
 
 public class ShopMasterFacade {
 
-    private final CatalogoFacade fachadaCatalogo;
+    private final CatalogoFacade catalogo;
     private final CatalogoInicial catalogoInicial;
 
     public ShopMasterFacade() {
-        this.fachadaCatalogo = new CatalogoFacade();
-        this.catalogoInicial = new CatalogoInicial(fachadaCatalogo);
+        catalogo = new CatalogoFacade();
+        catalogoInicial = new CatalogoInicial(catalogo);
     }
 
+    // CASO 1: Combo + garantía + empaque.
     public void ejecutarCompraRapida(
             String usuario, String idUsuario) {
 
-        // 1. Crear el combo con sus productos y subcombos.
-        ComponenteCatalogo comboGamer =
+        System.out.println("\n=== CASO 1: COMPRA EXITOSA ===");
+
+        ComponenteCatalogo combo =
                 catalogoInicial.crearComboGamer();
 
-        System.out.println("\n=== ÁRBOL DE PRODUCTOS ===");
-        comboGamer.detallarElementoCatalogo();;
+        combo.detallarElementoCatalogo();
 
-        // 2. Crear el pedido base.
-        Pedido pedido = new PedidoBase(comboGamer);
-        double costoBase = pedido.getCosto();
+        Pedido pedido = new PedidoBase(combo);
+        double base = pedido.getCosto();
 
-        // 3. Agregar garantía extendida.
         pedido = new GarantiaExtendida(pedido);
-        double costoConGarantia = pedido.getCosto();
+        double conGarantia = pedido.getCosto();
 
-        // 4. Agregar empaque de regalo.
         pedido = new EmpaqueRegalo(pedido);
-        double total = pedido.getCosto();
 
-        // 5. Mostrar el cálculo.
-        System.out.println("\n=== RESUMEN DE COMPRA ===");
-        System.out.println(pedido.getDescripcion());
-
-        System.out.printf(
-                "Costo base: $%,.0f COP%n", costoBase
-        );
+        System.out.printf("Costo base: $%,.0f COP%n", base);
 
         System.out.printf(
                 "Garantía extendida (10%%): $%,.0f COP%n",
-                costoConGarantia - costoBase
+                conGarantia - base
         );
 
         System.out.printf(
                 "Empaque premium: $%,.0f COP%n",
-                total - costoConGarantia
+                pedido.getCosto() - conGarantia
         );
+
+        procesarCompra(usuario, idUsuario, pedido);
+    }
+
+    // CASO 2: Servidor + manejo prioritario frágil.
+    public void ejecutarCompraServidor(
+            String usuario, String idUsuario) {
+
+        System.out.println("\n=== CASO 2: RECHAZO POR MONTO ===");
+
+        ComponenteCatalogo servidor = catalogo.crearProducto(
+                "Servidor Empresarial", "05", 6000000
+        );
+
+        servidor.detallarElementoCatalogo();
+
+        Pedido pedido = new PedidoBase(servidor);
+        double base = pedido.getCosto();
+
+        pedido = new PrioritarioFragil(pedido);
 
         System.out.printf(
-                "TOTAL: $%,.0f COP%n", total
+                "Manejo prioritario frágil: $%,.0f COP%n",
+                pedido.getCosto() - base
         );
 
-        // 6. Pasar obligatoriamente por el proxy.
+        procesarCompra(usuario, idUsuario, pedido);
+    }
+
+    // CASO 3: Mouse para un usuario reportado.
+    public void ejecutarCompraMouse(
+            String usuario, String idUsuario) {
+
+        System.out.println("\n=== CASO 3: USUARIO REPORTADO ===");
+
+        ComponenteCatalogo mouse = catalogo.crearProducto(
+                "Mouse", "06", 150000
+        );
+
+        mouse.detallarElementoCatalogo();
+
+        Pedido pedido = new PedidoBase(mouse);
+
+        procesarCompra(usuario, idUsuario, pedido);
+    }
+
+    // Flujo común: todo cobro pasa por el proxy.
+    private void procesarCompra(
+            String usuario, String idUsuario, Pedido pedido) {
+
+        System.out.println(pedido.getDescripcion());
+
+        System.out.printf(
+                "TOTAL: $%,.0f COP%n", pedido.getCosto()
+        );
+
         ProcesadorPago procesador = new ProxySeguridadPago(
                 usuario, idUsuario, "CLIENTE"
         );
 
-        System.out.println("\n=== PROCESAMIENTO DEL PAGO ===");
-
         System.out.println(
-                procesador.realizarPagoEnPesos(usuario, total)
+                procesador.realizarPagoEnPesos(
+                        usuario, pedido.getCosto()
+                )
         );
     }
 }

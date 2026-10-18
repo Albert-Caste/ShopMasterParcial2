@@ -1,49 +1,71 @@
 package co.edu.uniquindio.catalogo;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PaqueteCompuesto implements ComponenteCatalogo {
-    private String nombre;
-    private List <ComponenteCatalogo> componenteCatalogos;
 
-    //Constructor
-    public PaqueteCompuesto (String nombre){
-       this.nombre=nombre;
-       this.componenteCatalogos=new ArrayList<>();
+    private String nombreCombo;
+    private List<ComponenteCatalogo> listaCombos;
+
+
+    public PaqueteCompuesto(String nombreCombo){
+        this.nombreCombo = nombreCombo;
+        listaCombos = new ArrayList<>();
     }
 
-    //Sobreescritura de métodos
-    @Override
-    public String getNombre(){
-        return this.nombre;
+    public void agregarCombo(ComponenteCatalogo compParaAgregar){
+        listaCombos.add(compParaAgregar);
     }
 
-    @Override
-    public void add(ComponenteCatalogo componenteCatalogo){
-        componenteCatalogos.add(componenteCatalogo);
+    public void eliminarCombo(ComponenteCatalogo compParaEliminar){
+        listaCombos.remove(compParaEliminar);
+
     }
 
+
+
+
     @Override
-    public void print(){
-        System.out.println("\n[ PAQUETE] ===>"+ nombre);
-        System.out.println("----------------------------------------");
-        for (ComponenteCatalogo componente: componenteCatalogos){
-            componente.print();
+    public double calcularPrecio() {
+
+        double precioCombo = 0;
+
+        for (ComponenteCatalogo ct : listaCombos){
+            precioCombo += ct.calcularPrecio();
         }
-        System.out.println("\n TOTAL: "+nombre+ " $"+getPrecio());
-        System.out.println("----------------------------------------");
+
+        return precioCombo;
     }
 
     @Override
-    public double getPrecio(){
-        double total=0;
+    public void detallarElementoCatalogo() {
+        System.out.println("Nombre combo: " + nombreCombo + "\n" +
+                "Incluye: " + "\n");
 
-        for(ComponenteCatalogo componente: componenteCatalogos){
-            total+=componente.getPrecio();
+        for (ComponenteCatalogo cat : listaCombos){
+            cat.detallarElementoCatalogo();
         }
-        return total;
+
+        System.out.println("Precio: " + calcularPrecio());
+
+
+
     }
 
+    public String getNombreCombo() {
+        return nombreCombo;
+    }
+
+    public void setNombreCombo(String nombreCombo) {
+        this.nombreCombo = nombreCombo;
+    }
+
+    public List<ComponenteCatalogo> getListaCombos() {
+        return listaCombos;
+    }
+
+    public void setListaCombos(List<ComponenteCatalogo> listaCombos) {
+        this.listaCombos = listaCombos;
+    }
 }

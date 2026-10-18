@@ -7,5 +7,9 @@ public class Main {
         ShopMasterFacade tienda = new ShopMasterFacade();
 
         tienda.ejecutarCompraRapida("cliente_vip", "123");
+
+        tienda.ejecutarCompraServidor("cliente_normal", "456");
+
+        tienda.ejecutarCompraMouse("BLOQUEADO", "789");
     }
 }

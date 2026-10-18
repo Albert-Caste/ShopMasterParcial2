@@ -12,12 +12,12 @@ public class PedidoBase implements Pedido{
     //Sobreescritura de métodos
 
     @Override
-    public String getDescripcion(){
-        return "Nombre de Paquete Base: "+componenteCatalogo.getNombre();
+    public String getDescripcion() {
+        return "Pedido base";
     }
     @Override
     public double getCosto(){
-        return componenteCatalogo.getPrecio();
+        return componenteCatalogo.calcularPrecio();
     }
 
 }
