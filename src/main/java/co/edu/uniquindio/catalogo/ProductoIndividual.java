@@ -8,6 +8,7 @@ public class ProductoIndividual implements ComponenteCatalogo{
 
     public ProductoIndividual (String nombre, String codigo, Double precio){
         this.nombre = nombre;
+        this.codigo = codigo;
         this.precio = precio;
     }
 
@@ -20,10 +21,12 @@ public class ProductoIndividual implements ComponenteCatalogo{
 
     @Override
     public void detallarElementoCatalogo() {
-
-        System.out.println("Producto: " + nombre + "\n" +
-                            "Codigo: " + codigo +
-                           "Precio: " + precio);
+        System.out.println(
+                "Producto: " + nombre
+                        + "\nCódigo: " + codigo
+                        + "\nPrecio: $" + precio
+                        + "\n"
+        );
     }
 
 

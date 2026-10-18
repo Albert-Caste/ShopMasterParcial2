@@ -18,10 +18,10 @@ public class CatalogoInicial {
                 catalogo.crearProducto("Teclado", "02", 200000);
 
         ComponenteCatalogo liquido =
-                catalogo.crearProducto("Liquido de limpieza", "03", 20000);
+                catalogo.crearProducto("Liquido de limpieza", "03", 15000);
 
         ComponenteCatalogo pano =
-                catalogo.crearProducto("Pano de limpieza", "04", 10000);
+                catalogo.crearProducto("Pano de limpieza", "04", 25000);
 
         PaqueteCompuesto invetarioIndividual =
                 catalogo.crearPaquete("invetarioIndividual");
@@ -46,10 +46,10 @@ public class CatalogoInicial {
                 catalogo.crearProducto("Teclado", "02", 200000);
 
         ComponenteCatalogo liquido =
-                catalogo.crearProducto("Liquido de limpieza", "03", 20000);
+                catalogo.crearProducto("Liquido de limpieza", "03", 15000);
 
         ComponenteCatalogo pano =
-                catalogo.crearProducto("Pano de limpieza", "04", 10000);
+                catalogo.crearProducto("Pano de limpieza", "04", 25000);
 
         PaqueteCompuesto kit =
                 catalogo.crearPaquete("Kit de Limpieza");
